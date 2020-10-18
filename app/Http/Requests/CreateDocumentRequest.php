@@ -24,7 +24,7 @@ class CreateDocumentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "string|max:60",
+            'description' => "string|max:60",
             'file' => 'required|mimes:doc,docx,pdf,txt,json,xml|max:2048'
         ];
     }

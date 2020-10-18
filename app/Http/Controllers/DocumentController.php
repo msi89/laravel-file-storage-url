@@ -4,33 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateDocumentRequest;
+use App\Repositories\DocumentRepository;
 
 class DocumentController extends Controller
 {
+    protected DocumentRepository $documents;
+
+    public function __construct(DocumentRepository $documents)
+    {
+        $this->documents = $documents;
+    }
     public function index()
     {
-        return response()->json(Document::all());
+        return response()->json($this->documents->all());
     }
 
-    public function show(int $id)
+    public function show(string $path)
     {
-        return response()->json(Document::findOrFail($id));
+        $doc = $this->documents->download($path);
+        return response()->download($doc);
     }
 
     public function store(CreateDocumentRequest $request)
     {
-
         $file = $request->file('file');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('docs', $filename, 'public');
-        //store your file into database
-        $document = new Document();
-        $document->name = $request->name;
-        $document->url = url(Storage::url($path));
-        $document->save();
-
+        $document = $this->documents->upload($file, $request->comment);
         return response()->json($document, 201);
     }
 }

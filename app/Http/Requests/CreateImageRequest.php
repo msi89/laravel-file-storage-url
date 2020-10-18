@@ -24,8 +24,8 @@ class CreateImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> "string|max:60",
-            'image' => 'required|mimes:jpeg,png|max:1024',
+            'description' => "string|max:60",
+            'image' => 'required|image|mimes:jpeg,png|max:1024',
         ];
     }
 }

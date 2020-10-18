@@ -12,10 +12,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ImageController;
+use App\Services\ImagePathGenerator;
 
 Route::get('/', function () {
-    $url = Storage::url('docs/1602954453.txt');
-    dd(url($url));
     return view('welcome');
 });
+
+Route::get('/documents/{path}', [DocumentController::class, 'show']);
+Route::get('/images/{path}', [ImageController::class, 'show']);
