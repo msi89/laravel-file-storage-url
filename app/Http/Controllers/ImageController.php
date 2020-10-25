@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\ImageRepository;
 use App\Http\Requests\CreateImageRequest;
+use App\Jobs\ResizeImage;
 
 class ImageController extends Controller
 {
@@ -30,5 +31,15 @@ class ImageController extends Controller
         $image = $request->file('image');
         $img = $this->images->upload($image, $request->description);
         return response()->json($img, 201);
+    }
+    
+    public function storeResize(Request $request)
+    {
+        $file = $request->file('file');
+        $image = $file->move(public_path("uploads/{$file->getBasename()}", $file->getClientOriginalExtension()));
+        $formats = [150, 500, 1000, 1200, 1400];
+        echo $image->getBasename();
+        $this->dispatch(new ResizeImage($image, $formats));
+        return view('file');
     }
 }
