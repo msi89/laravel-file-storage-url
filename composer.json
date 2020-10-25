@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "league/glide-laravel": "^1.0"
+        "league/glide-laravel": "^1.0",
+         "intervention/image": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
